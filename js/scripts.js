@@ -2,11 +2,15 @@ const d = document
 const teamsContainer = d.querySelector('.teams-container')
 const leagues = d.querySelector('.leagues')
 const APIURL = 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php?l='
-let league = 'Italian Serie A'
+const params = new URLSearchParams(window.location.search)
+const leagueUrlParams = params.get('league')
 
-async function petitionLeagues(nameLeague ='Italian Serie A') {
+
+let league = leagueUrlParams ||  'Italian Serie A'
+
+async function petitionLeagues(nameLeague) {
     try{
-        teamsContainer.innerHTML= `cargando...`
+        teamsContainer.innerHTML= `<img src = "./assets/rings.svg" class='loader'>`
         let response = await fetch(APIURL+nameLeague)
         if(response.ok!= true){
             let er  = new Error('error en la peticion')
@@ -19,7 +23,7 @@ async function petitionLeagues(nameLeague ='Italian Serie A') {
         let text  = ''
 
         teams?.forEach(team => {
-            text+= ` <div class = 'equipo'>
+            text+= ` <div class = 'team'>
                         <h1>${team.strTeam}</h1>
                         <h2>${team.strCountry}</h2>
                         <img  src=${team.strTeamBadge} alt="">  
@@ -37,8 +41,19 @@ async function petitionLeagues(nameLeague ='Italian Serie A') {
         teamsContainer.innerHTML=`<h1>${error.message}</h1>`
     }
 }
-petitionLeagues()
 
+
+document.addEventListener('DOMContentLoaded', () => {
+    /* league = leagueUrlParams */
+    console.log(leagueUrlParams);
+   
+    petitionLeagues(leagueUrlParams || league)
+    leagues.value = leagueUrlParams || league
+    console.log(league);
+   
+    
+   
+})
 
 leagues.addEventListener('change', (e) => {
     league = e.target.value

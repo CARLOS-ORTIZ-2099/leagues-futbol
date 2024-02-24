@@ -5,23 +5,28 @@ const idTeam = params.get('team');
 console.log(idTeam);
 const league = params.get('league');
 console.log(league);
+const returnBtn = document.querySelector('.return-btn')
+
+returnBtn.addEventListener('click', () => {
+/*    alert('volver') */
+   window.location.href = `index.html?league=${league}`
+})
 
 const APIURL = 'https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php?l='
 
 async function petitionInfoTeam() {
    try{
-        infoTeamContainer.innerHTML = `cargando...`
+        infoTeamContainer.innerHTML = `<img src = "./assets/rings.svg" class='loader'>`
         const response = await fetch(APIURL+league)
-        console.log(response);
         if(!response.ok){
             throw new Error('ocurrio un error')
         }
         const {teams} = await response.json()
         console.log(teams);
         let arrayOrder = mergeSort(teams, 0, teams.length-1)
-        console.log(arrayOrder);
+       /*  console.log(arrayOrder); */
         let indexTarget = binarySearch(arrayOrder, idTeam )
-        console.log(indexTarget);
+        /* console.log(indexTarget); */
         console.log(arrayOrder[indexTarget]);
         infoTeamContainer.innerHTML =''
         renderInfo(arrayOrder[indexTarget])
@@ -37,27 +42,29 @@ document.addEventListener('DOMContentLoaded', petitionInfoTeam)
 
 function renderInfo(arrayData) {
 
-   //
-   const {strLeague,strLeague2, strLeague3, strLeague4, strLeague5, strLeague6, strLeague7, strStadiumThumb, strTeamBadge, strTeamBanner, strTeamJersey,
-   strTeamLogo } = arrayData
+   // destructurando los datos que son mas propensos a no estar en todos los equipos
+   const {strLeague,strLeague2, strLeague3, strLeague4, strLeague5, strLeague6, strLeague7, strStadiumThumb,
+   strTeamFanart1, strTeamFanart2, strTeamFanart3, strTeamFanart4
+} = arrayData
    
-   const ob = Object.entries({strLeague, strLeague2, strLeague3, strLeague4, strLeague5, strLeague6, strLeague7, strStadiumThumb, strTeamBadge, strTeamBanner, 
-   strTeamJersey, strTeamLogo })
+   const ob = Object.entries({strLeague, strLeague2, strLeague3, strLeague4, strLeague5, strLeague6, strLeague7, strStadiumThumb, strTeamFanart1, strTeamFanart2, strTeamFanart3, strTeamFanart4
+   })
    
 
    const div = document.createElement('div')
+   div.classList.add('team-data-first')
    div.innerHTML = ` 
-   <div>
-         <h2>int formed year: ${arrayData.intFormedYear}</h2>
-         <h2>name alternate: ${arrayData.strAlternate}</h2>
-         <h2>country: ${arrayData.strCountry}</h2>
-         <h2>description: ${arrayData.strDescriptionES ||arrayData.strDescriptionEN}</h2>
-         <h2>keywords: ${arrayData.strKeywords}</h2>
-         <h2>kit color:</h2>
-         <h2>stadium: ${arrayData.strStadium}</h2>
-         <h2> stadium description: ${arrayData.strStadiumDescription}</h2>
-         <h2>stadium location: ${arrayData.strStadiumLocation}</h2>
-   </div>
+         <h1>${arrayData.strTeam}</h1>
+         <img src=${arrayData.strTeamBadge}>
+         <h2><span>int formed year</span> : ${arrayData.intFormedYear}</h2>
+         <h2> <span>name alternate</span> : ${arrayData.strAlternate}</h2>
+         <h2> <span>country</span> : ${arrayData.strCountry}</h2>
+         <img src=${arrayData.strTeamJersey}>
+         <h2> <span>description</span> : ${arrayData.strDescriptionES ||arrayData.strDescriptionEN}</h2>
+         <h2> <span>keywords</span> : ${arrayData.strKeywords || 'NA'}</h2>
+         <h2> <span>stadium</span> : ${arrayData.strStadium}</h2>
+         <h2> <span>stadium description</span> : ${arrayData.strStadiumDescription}</h2>
+         <h2> <span>stadium location</span> : ${arrayData.strStadiumLocation}</h2>
 
    `
    infoTeamContainer.appendChild(div)
@@ -68,26 +75,34 @@ function renderInfo(arrayData) {
 function evalData(data) {
    console.log(data);
    const div = document.createElement('div')
-
+   div.classList.add('team-data-second')
+   const titleLeagues = document.createElement('h1')
+   titleLeagues.textContent = `Leagues :`
+   const sectionLeagues = document.createElement('section')
+   sectionLeagues.classList.add('section-leagues')
+   sectionLeagues.insertAdjacentElement("afterbegin" , titleLeagues)
+   const sectionImages = document.createElement('section')
+   sectionImages.classList.add('section-images')
    for(const [propertyName, propertyValue] of data) {
-      console.log(propertyName, propertyValue);
+    /*   console.log(propertyName, propertyValue); */
       if(propertyValue && isImageUrl(propertyValue)){
-         console.log(propertyValue, 'existe');
+       /*   console.log(propertyValue, 'existe'); */
          // renderizar o crear elementos html
          const img = document.createElement('img')
          img.src =  `${propertyValue}`
+         sectionImages.appendChild(img)
          // condicional para verificar si el elemento es una url si es asi quiere decir que es una imagen entonces renderizar  una imagen con una etiqueta img
-         div.appendChild(img)
-         console.log(img);
+         div.appendChild(sectionImages)
          
       }else if(propertyValue){
+         
          const h1 = document.createElement('h1')
-         h1.textContent = `${propertyName} ${propertyValue}`
-         div.appendChild(h1)
+         h1.textContent = `${propertyName}: ${propertyValue}`
+         sectionLeagues.appendChild(h1)
+         div.appendChild(sectionLeagues)
       }
    }
-
-   infoTeamContainer.insertAdjacentElement('beforeend',div)
+   infoTeamContainer.appendChild(div)
 
 }
 
