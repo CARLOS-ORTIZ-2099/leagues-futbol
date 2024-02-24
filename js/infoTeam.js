@@ -2,10 +2,16 @@ const infoTeamContainer = document.querySelector('.info-team-container')
 const params = new URLSearchParams(window.location.search);
 //console.log(params);
 const idTeam = params.get('team');
-console.log(idTeam);
+//console.log(idTeam);
 const league = params.get('league');
-console.log(league);
+//console.log(league);
 const returnBtn = document.querySelector('.return-btn')
+const gallery = document.querySelector('.gallery')
+const imgGallery = document.querySelector('.gallery .img')
+const btnsDirection = document.querySelectorAll('.gallery .direction')
+const closeModal = document.querySelector('.close-modal')
+let sectionImages
+let indexImage
 
 returnBtn.addEventListener('click', () => {
 /*    alert('volver') */
@@ -27,7 +33,7 @@ async function petitionInfoTeam() {
        /*  console.log(arrayOrder); */
         let indexTarget = binarySearch(arrayOrder, idTeam )
         /* console.log(indexTarget); */
-        console.log(arrayOrder[indexTarget]);
+       // console.log(arrayOrder[indexTarget]);
         infoTeamContainer.innerHTML =''
         renderInfo(arrayOrder[indexTarget])
    }
@@ -69,6 +75,9 @@ function renderInfo(arrayData) {
    `
    infoTeamContainer.appendChild(div)
    evalData(ob)
+   sectionImages =[...document.querySelectorAll('.section-images img')]
+   console.log(sectionImages);
+   sectionImages.forEach((image, index) => image.addEventListener('click', () => showModal(index)))
 }
 
 // verificar si la propiedad tiene un valor 
@@ -193,4 +202,41 @@ function merge(array, min, half, max) {
 }
 
 
+// funcion gallery
+function showModal(index) {
+  /*  console.log(index);
+   console.log( sectionImages[index]); */
+   indexImage = index
+   console.log(indexImage);
+   gallery.classList.remove('hidden')
+   imgGallery.src = sectionImages[index].src
+   
+}
+
+btnsDirection.forEach(btn => btn.addEventListener('click', moveImage))
+
+function moveImage(e) {
+  
+   if(e.target.matches('.previous')){
+      console.log('mover a la izquierda');
+      indexImage--
+      indexImage < 0 ? indexImage = sectionImages.length-1:indexImage
+      console.log(indexImage);
+      console.log(sectionImages[indexImage])
+      imgGallery.src = sectionImages[indexImage].src
+
+
+   }else{
+      console.log('mover a la derecha');
+      indexImage++
+      indexImage > sectionImages.length-1 ?indexImage = 0:indexImage
+      console.log(indexImage);
+      console.log(sectionImages[indexImage])
+      imgGallery.src = sectionImages[indexImage].src
+   }
+}
+
+// cerrar modal
+
+closeModal.addEventListener('click', () => gallery.classList.add('hidden'))
 

@@ -12,7 +12,8 @@
 body{
     text-align: center;
     min-height: 100vh;
-    background: aliceblue
+    background: aliceblue;
+    position: relative;
 }
 
 .return-btn {
@@ -28,11 +29,11 @@ body{
 
 
 .info-team-container{
-    border: solid red 2px;
+   /*  border: solid red 2px; */
 }
 
 .team-data-first{
-    border:  solid orange 3px;
+  /*   border:  solid orange 3px; */
     margin: 10px;
 }
 
@@ -46,7 +47,7 @@ body{
     margin-bottom: 20px;
 }
 .team-data-first h2{
-    border: solid skyblue 2px;
+    /* border: solid skyblue 2px; */
     margin: 1.5rem;
 }
 .team-data-first span{
@@ -56,7 +57,7 @@ body{
 
 
 .team-data-second{
-    border: solid green 3px;
+  /*   border: solid green 3px; */
     margin: 10px;
 }
 
@@ -69,12 +70,13 @@ body{
 }
 
 .team-data-second .section-images{
-    border:  solid tomato 2px;
+    /* border:  solid tomato 2px; */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     justify-content: space-around;
     align-items: center;
     gap: 1rem;
+    cursor: pointer;
 }
 
 .loader{
@@ -84,13 +86,74 @@ body{
     
 }
 
+
+
+
+.gallery{
+    background: rgba(0, 0, 0, .7);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ 
+}
+.test{
+    position: fixed;
+   /*  border: solid red 2px; */
+    top: 10%;
+}
+
+
+
+.hidden{
+    display: none;
+}
+
+
+.gallery .previous{
+    font-size: 40px;
+    position: absolute;
+    left: -5%;
+    top: 45%;
+}
+.gallery .next{
+    font-size: 40px;
+    position: absolute;
+    top: 45%;
+    right: -5%;
+}
+
+.close-modal{
+    position: absolute;
+    right: 0;
+    top: -10%;
+    font-size: 40px;
+}
+
+.next:hover, .previous:hover{
+    color: #1d2ff7;
+    cursor: pointer;
+}
+
+.close-modal:hover{
+    color: red;
+    cursor: pointer;
+}
+
+.gallery img{
+    max-width: 100%;
+}
+
 @media screen and (max-width: 700px) {
     .team-data-first h1{
         font-size: 50px;
     }
 
     .team-data-first h2{
-        border: solid skyblue 2px;
+       /*  border: solid skyblue 2px; */
         margin: 15px 0;
     }
     .team-data-second .section-leagues h1{
@@ -100,5 +163,29 @@ body{
     .team-data-second .section-images {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
+
+   
+
 }
 
+@media screen and (max-width: 1000px) {
+    .gallery .previous{
+        font-size: 30px;
+        position: absolute;
+        left: 0%;
+        top: 45%;
+    }
+    .gallery .next{
+        font-size: 30px;
+        position: absolute;
+        top: 45%;
+        right: 0%;
+    }
+    .close-modal{
+        position: absolute;
+        right: 0;
+        top: -20%;
+        font-size: 25px;
+    
+    }
+}   

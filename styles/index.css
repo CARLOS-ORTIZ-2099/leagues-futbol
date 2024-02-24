@@ -21,21 +21,21 @@
 }
 
 .container{
-    border: solid red 5px;
+   /*  border: solid red 5px; */
     /* min-height: 100vh; */
     text-align: center;
 }
 
 
 .select-container{
-    border: solid blue 2px;
+   /*  border: solid blue 2px; */
     margin-bottom: 1rem;
     text-align: center;
     padding: 3rem;
 }
 
 .teams-container {
-    border: solid green 2px;
+   /*  border: solid green 2px; */
     display: flex;
    /*  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); */
    flex-wrap: wrap;
@@ -84,7 +84,7 @@
 
 @media screen and (max-width:800px) {
     .teams-container {
-        border: solid green 2px;
+       /*  border: solid green 2px; */
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 2rem;
